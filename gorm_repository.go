@@ -7,12 +7,19 @@ type GormRepository struct {
 	Db *gorm.DB
 }
 
-func (b *GormRepository) InitDb(db *gorm.DB)  {
-	b.Db = db
+func (gr GormRepository) Initialize(args ...interface{})  {
+	if len(args) == 0 {
+		panic("*gorm.DB must be supplied for initialization")
+	}
+	if _, ok := args[0].(*gorm.DB); !ok {
+		panic("The first arg must be *gorm.DB")
+	}
+
+	gr.InitDb(args[0].(*gorm.DB))
 }
 
-func (r *GormRepository) Initialize(db * gorm.DB) {
-	r.InitDb(db)
+func (b *GormRepository) InitDb(db *gorm.DB)  {
+	b.Db = db
 }
 
 func (r GormRepository) Insert(model IModel) (uint, error){
