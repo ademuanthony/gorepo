@@ -7,7 +7,7 @@ type GormRepository struct {
 	Db *gorm.DB
 }
 
-func (gr GormRepository) Initialize(args ...interface{})  {
+func (gr *GormRepository) Initialize(args ...interface{})  {
 	if len(args) == 0 {
 		panic("*gorm.DB must be supplied for initialization")
 	}
@@ -54,16 +54,16 @@ func (r GormRepository) FindById(receiver IModel, uint uint) (error){
 }
 
 func (r GormRepository) FindFirst(receiver IModel, where string, args ...interface{}) (error){
-	return r.Db.Where(where, args).Limit(1).Find(receiver).Error
+	return r.Db.Where(where, args...).Limit(1).Find(receiver).Error
 }
 
 func (r GormRepository) FindAll(models interface{}, where string, args ...interface{}) (err error){
-	err = r.Db.Where(where, args).Find(models).Error
+	err = r.Db.Where(where, args...).Find(models).Error
 	return
 }
 
 func (r GormRepository) Delete(model IModel, where string, args ...interface{}) error {
-	return r.Db.Where(where, args).Delete(&model).Error
+	return r.Db.Where(where, args...).Delete(&model).Error
 }
 
 func (r GormRepository) NewRecord(model IModel) bool {
