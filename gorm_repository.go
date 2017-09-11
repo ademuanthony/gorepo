@@ -18,56 +18,56 @@ func (gr *GormRepository) Initialize(args ...interface{})  {
 	gr.InitDb(args[0].(*gorm.DB))
 }
 
-func (b *GormRepository) InitDb(db *gorm.DB)  {
-	b.Db = db
+func (gr *GormRepository) InitDb(db *gorm.DB)  {
+	gr.Db = db
 }
 
-func (r GormRepository) Insert(model IModel) (uint, error){
+func (gr GormRepository) Insert(model IModel) (uint, error){
 	if err := model.Validate(); err != nil{
 		return 0, err
 	}
-	if err := r.Db.Create(model).Error; err != nil{
+	if err := gr.Db.Create(model).Error; err != nil{
 		return 0, err
 	}
 	return model.GetId(), nil
 }
 
-func (r GormRepository) Update(model IModel) (error){
+func (gr GormRepository) Update(model IModel) (error){
 	if err := model.Validate(); err != nil{
 		return err
 	}
-	return r.Db.Save(model).Error
+	return gr.Db.Save(model).Error
 }
 
-func (r GormRepository) Save(model IModel) (uint, error){
+func (gr GormRepository) Save(model IModel) (uint, error){
 	if err := model.Validate(); err != nil{
 		return 0, err
 	}
-	if err := r.Db.Save(model).Error; err != nil{
+	if err := gr.Db.Save(model).Error; err != nil{
 		return 0, err
 	}
 	return model.GetId(), nil
 }
 
-func (r GormRepository) FindById(receiver IModel, uint uint) (error){
-	return r.Db.First(receiver).Error
+func (gr GormRepository) FindById(receiver IModel, id uint) (error){
+	return gr.Db.First(receiver, id).Error
 }
 
-func (r GormRepository) FindFirst(receiver IModel, where string, args ...interface{}) (error){
-	return r.Db.Where(where, args...).Limit(1).Find(receiver).Error
+func (gr GormRepository) FindFirst(receiver IModel, where string, args ...interface{}) (error){
+	return gr.Db.Where(where, args...).Limit(1).Find(receiver).Error
 }
 
-func (r GormRepository) FindAll(models interface{}, where string, args ...interface{}) (err error){
-	err = r.Db.Where(where, args...).Find(models).Error
+func (gr GormRepository) FindAll(models interface{}, where string, args ...interface{}) (err error){
+	err = gr.Db.Where(where, args...).Find(models).Error
 	return
 }
 
-func (r GormRepository) Delete(model IModel, where string, args ...interface{}) error {
-	return r.Db.Where(where, args...).Delete(&model).Error
+func (gr GormRepository) Delete(model IModel, where string, args ...interface{}) error {
+	return gr.Db.Where(where, args...).Delete(&model).Error
 }
 
-func (r GormRepository) NewRecord(model IModel) bool {
-	return r.Db.NewRecord(&model)
+func (gr GormRepository) NewRecord(model IModel) bool {
+	return gr.Db.NewRecord(&model)
 }
 
 
