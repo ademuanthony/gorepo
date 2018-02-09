@@ -7,6 +7,10 @@ type GormRepository struct {
 	Db *gorm.DB
 }
 
+func NewGormRepository(db *gorm.DB) GormRepository {
+	return GormRepository{Db:db}
+}
+
 func (gr *GormRepository) Initialize(args ...interface{})  {
 	if len(args) == 0 {
 		panic("*gorm.DB must be supplied for initialization")
